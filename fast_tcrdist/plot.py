@@ -100,11 +100,11 @@ def plot_umap(
 		if any([factor not in set(data.obs[by_factor]) for factor in label_factors]) :
 			raise ValueError("{lab} not in {by_fac}".format(lab = label_factors, by_fac = by_factor))
 
-	if not "umap" in data.obsm :
+	if not "X_umap" in data.obsm :
 		print("No UMAP found, calculating with 50 PCs")
 		data.calc_umap()
 
-	umap = data.obsm["umap"]
+	umap = data.obsm["X_umap"]
 	
 	cols = None
 	labels = None

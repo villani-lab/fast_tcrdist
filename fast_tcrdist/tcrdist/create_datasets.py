@@ -113,22 +113,15 @@ class tcrdist_dataset(AnnData) :
         if return_coords :
             return(embedding)
 
-    def kmeans_cluster(self, nPC= 50, nclust = 30, return_results = False) :
-        clust = stats.kmeans(self.obsm["k_pca"][:,0:nPC-1], k = nclust)
-
-        self.obs["k_means_clust"] =  clust
-
-        if return_results :
-            return(clust)
-
     def hdbscan_cluster(self, return_results = False, coord = "umap", n_coord = 2, **kwargs) :
-        if not coord in self.obsm :
+        embedding = "_".join(["X", coord])
+        if not embedding in self.obsm :
             raise ValueError("No {coord} in object.  Please run {coord} first!".format(coord = coord))
             
-        clust = stats.hdbscan(self.obsm[coord][:,0:n_coord], **kwargs)
+        clust = stats.hdbscan(self.obsm[embedding][:,0:n_coord], **kwargs)
         # Need to add one because pandas gets confused with categorical data < 1, make -1 "unassigned"
         clust = [str(num + 1) if num != -1 else "unassigned" for num in clust]
-        self.obs["dbscan_clust"] = clust
+        self.obs["hdbscan_clust"] = clust
 
         if return_results :
             return(clust)

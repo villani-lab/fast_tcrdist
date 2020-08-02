@@ -2,3 +2,5 @@ pandas
 numpy
 distance
 cython
+hdbscan
+logomaker
