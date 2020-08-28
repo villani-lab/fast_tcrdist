@@ -3,7 +3,6 @@ from . import blosum_mtx
 cdef dict adj_blosum = blosum_mtx.adj_blosum
 cdef dict blosum = blosum_mtx.blosum
 
-# import nwalign3 as nw
 import numpy as np
 cimport numpy as np
 from .cnwalign import global_align
@@ -83,14 +82,6 @@ cpdef int blosum_sequence_distance(char* aseq, char* bseq, int gap_penalty, cdr3
 	for num in range(indx) :
 		dist += blosum_character_distance(aseq[num: num + 1], bseq[num:num + 1], gap_penalty, cdr3 = cdr3)
 	return(dist)
-
-# cpdef tuple nw_align(char* a, char* b) :
-# 	if len(a) == len(b) :
-# 		return(a, b)
-# 	cdef tuple align
-# 	align = global_align(a, b, matrix = matrix, gap_open = -20, gap_extend = -20)
-
-# 	return(align[0], align[1])
 
 cpdef int nw_align(char* a, char* b) :
 	cdef int score

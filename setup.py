@@ -30,23 +30,13 @@ setup(
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'License :: OSI Approved :: Apache Software License',
-
-        'Programming Language :: Python :: 2.7',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
 
     install_requires=["pandas", "numpy", "distance", "cython", "hdbscan", "logomaker"],
 
-    keywords='',
-
     packages=find_packages(),
 
-    entry_points={
-        'console_scripts': [
-            'sample=sample:main',
-        ],
-    },
     ext_modules = cythonize(extensions), include_dirs = include_dirs
-    # ext_modules = [Extension("TCR_homology_10X.tcrdist.nw_align", ['TCR_homology_10X/tcrdist/nw_align.c'])]
 )
