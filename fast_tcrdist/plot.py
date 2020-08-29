@@ -9,20 +9,27 @@ from collections import Counter
 
 def plot_distance_matrix(
 	data,
-	cell_id,
 	row_colors : str = None,
 	**kwargs) :
 	
 	if row_colors :
 		if row_colors not in  data.obs.columns :
 			raise ValueError("{row_col} not in .obs".format(row_col = row_colors))
-		if not "{row_col}_colors".format(row_col = row_colors) in data.uns :
-			useful.factor_colors(data, row_colors)
+		# Get the categories
+		if not pd.api.types.is_categorical(data.obs[row_colors]) :
+			data.obs[row_colors] = data.obs[row_colors].astype("category")
+		categories = data.obs[row_colors].cat.categories
 
-		row_colors = [data.uns["{row_col}_colors".format(row_col = row_colors)][gene] for gene in data.obs[row_colors]]
+		if not "{row_col}_colors".format(row_col = row_colors) in data.uns :
+
+			palette = useful.godsnot_102[:len(categories)]
+			data.uns["{row_col}_colors".format(row_col = row_colors)] = palette
+
+		col_dict = dict(zip(categories, data.uns["{row_col}_colors".format(row_col = row_colors)]))
+
+		row_colors = [col_dict[gene] for gene in data.obs[row_colors]]
 
 	if not "linkage" in data.uns :
-
 		linkage = stat.calculate_linkage(data.X, data.obs.index.values)
 		data.uns["linkage"] = linkage
 	else :
@@ -31,153 +38,6 @@ def plot_distance_matrix(
 	plot = sns.clustermap(plot_df, row_linkage=linkage, col_linkage=linkage, row_colors = row_colors, **kwargs)
 	return(plot)
 
-def plot_kpca(
-	data, 
-	by_factor: str = None,
-	label_factors: list = [],
-	x_label: str = None,
-	y_label: str = None,
-	fig_height: float = 10,
-	fig_width: float = 10,
-	title: str = None,
-	ax = None,
-	**kwargs) :
-	
-	# Check the inputs
-	if by_factor :
-		if by_factor not in data.obs.columns :
-			raise ValueError("{by_fac} not in .obs".format(by_fac = by_factor))
-
-	if len(label_factors) > 0:
-		if any([factor not in set(data.obs[by_factor]) for factor in label_factors]) :
-			raise ValueError("{lab} not in {by_fac}".format(lab = label_factors, by_fac = by_factor))
-
-	if not "k_pca" in data.obsm :
-		print("No k-PCA found, calculating it")
-		data.kernel_pca()
-
-	pca = data.obsm["k_pca"]
-	cols = None
-	labels = None
-	# Get colors for factor
-	if by_factor :
-		if not "{by_factor}_colors".format(by_factor = by_factor) in data.uns :
-			useful.factor_colors(data, by_factor)
-			col_dict = data.uns["{by_factor}_colors".format(by_factor = by_factor)]
-		else :
-			col_dict = data.uns["{by_factor}_colors".format(by_factor = by_factor)]
-
-		if len(label_factors) > 0 :
-			cols = [col_dict[factor] if factor in label_factors else "#D0D0D0" for factor in data.obs[by_factor]]
-		else :
-			cols = [col_dict[factor] for factor in data.obs[by_factor]]
-		labels = [factor if factor in label_factors else None for factor in data.obs[by_factor]]
-		
-	plot = _scatter(x = pca[:,0], y = pca[:,1], c = cols, labels = labels,
-	x_label = x_label, y_label = y_label, fig_height = fig_height, fig_width = fig_width, title = title, ax = ax, **kwargs)
-	return(plot)
-
-def plot_umap(
-	data,
-	by_factor: str = None,
-	label_factors: list = [],
-	x_label: str = None,
-	y_label: str = None,
-	fig_height: float = 10,
-	fig_width: float = 10,
-	title: str = None,
-	**kwargs) :
-
-	# Check the inputs
-	if by_factor :
-		if by_factor not in data.obs.columns :
-			raise ValueError("{by_fac} not in .obs".format(by_fac = by_factor))
-
-	# If True, label all factors
-	if label_factors == True :
-		label_factors = set(data.obs[by_factor])
-	if len(label_factors) > 0:
-		if any([factor not in set(data.obs[by_factor]) for factor in label_factors]) :
-			raise ValueError("{lab} not in {by_fac}".format(lab = label_factors, by_fac = by_factor))
-
-	if not "X_umap" in data.obsm :
-		print("No UMAP found, calculating with 50 PCs")
-		data.calc_umap()
-
-	umap = data.obsm["X_umap"]
-	
-	cols = None
-	labels = None
-
-	if by_factor :
-		if not "{by_factor}_colors".format(by_factor = by_factor) in data.uns :
-			useful.factor_colors(data, by_factor)
-			col_dict = data.uns["{by_factor}_colors".format(by_factor = by_factor)]
-		else :
-			col_dict = data.uns["{by_factor}_colors".format(by_factor = by_factor)]
-
-		if len(label_factors) > 0 :
-			cols = [col_dict[factor] if factor in label_factors else "#D0D0D0" for factor in data.obs[by_factor]]
-		else :
-			cols = [col_dict[factor] for factor in data.obs[by_factor]]
-		labels = [factor if factor in label_factors else None for factor in data.obs[by_factor]]
-
-	plot = _scatter(x = umap[:,0], y = umap[:,1], c = cols, labels = labels,
-	x_label = x_label, y_label = y_label, fig_height = fig_height, fig_width = fig_width, title = title, **kwargs)
-	
-	return(plot)
-
-
-def _scatter(
-	x,
-	y,
-	labels = None,
-	point_size: float = 5,
-	s = None,
-	c = None,
-	x_label: str = None,
-	y_label: str = None,
-	fig_height: float = 10,
-	fig_width: float = 10,
-	title: str = None,
-	ax = None,
-	**kwargs) :
-
-	# Need to group things by unique labels
-	plot_dict = {}
-	if labels :
-		for key in set(labels) :
-			x_vals = [val for val, label in zip(x, labels) if label == key]
-			y_vals = [val for val, label in zip(y, labels) if label == key]
-			c_vals = [val for val, label in zip(c, labels) if label == key]
-			plot_dict[key] = {"x" : x_vals, "y" : y_vals, "c" : c_vals}
-	else :
-		plot_dict[None] = {"x" : x, "y" : y, "c" : c}
-
-	if not ax :
-		fig, ax = plt.subplots(1, 1, figsize = (fig_height, fig_width))
-	for key, val in plot_dict.items() :
-		ax.scatter(val["x"], val["y"], s = s, c = val["c"], label = key, **kwargs)
-
-	if labels and c :
-		ax.legend()
-	ax.set_xlabel(x_label, fontsize=18)
-	ax.set_ylabel(y_label, fontsize=16)
-	ax.set_title(title, fontsize = 20)
-
-	return(ax)
-
-def plot_kpca_var(data, nPC = 100, **kwargs) :
-	explained_variance = np.var(data.obsm["k_pca"], axis=0)
-	explained_variance_ratio = explained_variance / np.sum(explained_variance) * 100
-	explained_variance_ratio = explained_variance_ratio[0:nPC - 1]
-
-	plot = plt.bar(x = range(len(explained_variance_ratio)), height = explained_variance_ratio, **kwargs)
-	plot = plt.title("kpca explained variance")
-	plot = plt.ylabel("percent of variance")
-	plot = plt.xlabel("PC")
-
-	return(plot)
 
 def cluster_logo_plot(adata, obs_col, obs_val, lengths = "all") :
 	length_args = ["all", "dominant"]

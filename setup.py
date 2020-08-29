@@ -34,7 +34,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
 
-    install_requires=["pandas", "numpy", "distance", "cython", "hdbscan", "logomaker"],
+    install_requires=["pandas", "numpy", "distance", "cython", "hdbscan", "logomaker", "anndata", "scanpy"],
 
     packages=find_packages(),
 
