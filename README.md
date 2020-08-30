@@ -14,5 +14,6 @@ anndata object to allow for integrated downstream analyses.
 **Outisde files**
 
 The BLOSUM62 matrix used for alignments came from NCBI:https://www.ncbi.nlm.nih.gov/IEB/ToolBox/C_DOC/lxr/source/data/BLOSUM62
+
 CDR amino acid info was taken from the TCRDist database file "alphabeta_db.tsv" (https://www.dropbox.com/s/kivfp27gbz2m2st/tcrdist_extras_v2.tgz)
 and reformated into .json format (mouse_CDRs_for_10X.json and human_CDRs_for_10X.json)
