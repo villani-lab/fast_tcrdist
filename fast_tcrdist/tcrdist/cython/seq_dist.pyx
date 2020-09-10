@@ -1,3 +1,5 @@
+### Originally written by Brent Pederson, modified to be compatible with python 3 ###
+
 import os
 from . import blosum_mtx
 cdef dict adj_blosum = blosum_mtx.adj_blosum
@@ -129,7 +131,7 @@ cpdef np.ndarray create_tcrdist_matrix(dataframe, v_scores, only_betas = False) 
 	for seq_1, seq_2 in cdr3b_combinations :
 		alignb[cntr] = nw_align(seq_1, seq_2)
 		cntr +=1
-	
+
 	cdef np.ndarray aligna = np.zeros(triu[0].shape[0], dtype = int)
 	cdef int cntr1
 	cdef np.ndarray alphas

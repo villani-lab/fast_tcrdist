@@ -11,7 +11,7 @@ np_include = numpy.get_include()
 include_dirs = [np_include, "fast_tcrdist/tcrdist/cython"]
 
 extensions = [Extension('fast_tcrdist.tcrdist.cython.seq_dist', ['fast_tcrdist/tcrdist/cython/seq_dist.pyx']),
-Extension("fast_tcrdist.tcrdist.cython.cnwalign", ["fast_tcrdist/tcrdist/cython/cnwalign.c"], include_dirs = include_dirs)]
+Extension("fast_tcrdist.tcrdist.cython.cnwalign", ["fast_tcrdist/tcrdist/cython/cnwalign.pyx"], include_dirs = include_dirs)]
 
 setup(
     name='fast_tcrdist',
