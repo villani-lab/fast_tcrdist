@@ -11,7 +11,7 @@ future releases will aim to allow for other file formats.
 In addition to running the TCRDist algorithm, fast_tcrdist allows you to aggregate TCR info with single-cell gene expression into a single
 anndata object to allow for integrated downstream analyses.
 
-**Outisde files**
+**Outside files**
 
 The BLOSUM62 matrix used for alignments came from NCBI:https://www.ncbi.nlm.nih.gov/IEB/ToolBox/C_DOC/lxr/source/data/BLOSUM62
 

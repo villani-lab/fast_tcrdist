@@ -16,7 +16,7 @@ Extension("fast_tcrdist.tcrdist.cython.cnwalign", ["fast_tcrdist/tcrdist/cython/
 setup(
     name='fast_tcrdist',
 
-    version='0.01',
+    version='0.0.1',
 
     description='Optimized TCRDist calculation for TCR repertoire data analysis',
     long_description='',
@@ -24,7 +24,7 @@ setup(
     url='',
 
     author='Neal Smith',
-    author_email='nsmith19@mgh.hardvard.edu',
+    author_email='nsmith19@mgh.harvard.edu',
 
     license='MIT',
 
@@ -32,6 +32,9 @@ setup(
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
+        'Intended Audience :: Science/Research',
+ |      'Topic :: Scientific/Engineering :: Bio-Informatics',
+ |      'Natural Language :: English'
     ],
 
     install_requires=["pandas", "numpy", "distance", "cython", "hdbscan", "logomaker", "anndata", "scanpy"],
