@@ -33,8 +33,8 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Intended Audience :: Science/Research',
- |      'Topic :: Scientific/Engineering :: Bio-Informatics',
- |      'Natural Language :: English'
+        'Topic :: Scientific/Engineering :: Bio-Informatics',
+        'Natural Language :: English'
     ],
 
     install_requires=["pandas", "numpy", "distance", "cython", "hdbscan", "logomaker", "anndata", "scanpy"],
