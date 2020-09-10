@@ -3,10 +3,10 @@ from codecs import open
 from os import path
 from Cython.Build import cythonize
 from distutils.core import setup, Extension
+import numpy
 
 here = path.abspath(path.dirname(__file__))
 
-import numpy
 np_include = numpy.get_include()
 include_dirs = [np_include, "fast_tcrdist/tcrdist/cython"]
 
