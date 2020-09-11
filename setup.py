@@ -13,15 +13,19 @@ include_dirs = [np_include, "fast_tcrdist/tcrdist/cython"]
 extensions = [Extension('fast_tcrdist.tcrdist.cython.seq_dist', ['fast_tcrdist/tcrdist/cython/seq_dist.pyx']),
 Extension("fast_tcrdist.tcrdist.cython.cnwalign", ["fast_tcrdist/tcrdist/cython/cnwalign.pyx"], include_dirs = include_dirs)]
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='fast_tcrdist',
 
     version='0.0.1',
 
     description='Optimized TCRDist calculation for TCR repertoire data analysis',
-    long_description='',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
 
-    url='',
+    url='https://github.com/villani-lab/fast_tcrdist',
 
     author='Neal Smith',
     author_email='nsmith19@mgh.harvard.edu',
