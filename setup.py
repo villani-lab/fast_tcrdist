@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
 setup(
     name='fast_tcrdist',
 
-    version='0.0.1',
+    version='0.0.2',
 
     description='Optimized TCRDist calculation for TCR repertoire data analysis',
     long_description=long_description,
