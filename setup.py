@@ -10,8 +10,8 @@ here = path.abspath(path.dirname(__file__))
 np_include = numpy.get_include()
 include_dirs = [np_include, "fast_tcrdist/tcrdist/cython"]
 
-extensions = [Extension('fast_tcrdist.tcrdist.cython.seq_dist', ['fast_tcrdist/tcrdist/cython/seq_dist.pyx']),
-Extension("fast_tcrdist.tcrdist.cython.cnwalign", ["fast_tcrdist/tcrdist/cython/cnwalign.pyx"], include_dirs = include_dirs)]
+extensions = [Extension('fast_tcrdist.tcrdist.cython.seq_dist', ['fast_tcrdist/tcrdist/cython/seq_dist.c']),
+Extension("fast_tcrdist.tcrdist.cython.cnwalign", ["fast_tcrdist/tcrdist/cython/cnwalign.c"], include_dirs = include_dirs)]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
