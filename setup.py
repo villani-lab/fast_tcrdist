@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
 setup(
     name='fast_tcrdist',
 
-    version='0.0.2',
+    version='0.0.3',
 
     description='Optimized TCRDist calculation for TCR repertoire data analysis',
     long_description=long_description,
@@ -45,5 +45,7 @@ setup(
 
     packages=find_packages(),
 
-    ext_modules = cythonize(extensions), include_dirs = include_dirs
+    ext_modules = cythonize(extensions), include_dirs = include_dirs,
+
+    include_package_data = True
 )

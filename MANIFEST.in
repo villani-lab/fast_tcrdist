@@ -1,0 +1,2 @@
+include fast_tcrdist/tcrdist/db/*.json
+include fast_tcrdist/tcrdist/cython/BLOSUM62
