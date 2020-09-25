@@ -1,3 +1,5 @@
+### Originally written by Brent Pederson, modified to be compatible with python 3 ###
+
 import numpy as np
 cimport numpy as np
 

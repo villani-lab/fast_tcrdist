@@ -1,5 +1,3 @@
-### Originally written by Brent Pederson, modified to be compatible with python 3 ###
-
 import os
 from . import blosum_mtx
 cdef dict adj_blosum = blosum_mtx.adj_blosum
